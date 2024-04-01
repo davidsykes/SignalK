@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using HelloWorld;
+using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Text;
 
@@ -17,6 +19,12 @@ var responseText = await reader.ReadToEndAsync();
 
 Console.WriteLine(responseText);
 
+SignalKWebSocket sksocket = new("192.168.1.87");
+
+await sksocket.ProcessAsync(() =>
+{
+    Console.WriteLine("hsheh");
+});
 
 
 using (ClientWebSocket ws = new ClientWebSocket())
@@ -25,6 +33,8 @@ using (ClientWebSocket ws = new ClientWebSocket())
     await ws.ConnectAsync(serverUri, CancellationToken.None);
     while (ws.State == WebSocketState.Open)
     {
+        var ee = await SignalKWebSocket.ReceiveAsync(ws);
+
         string msg = """
             {
                 "name": "c# test server",
@@ -59,9 +69,9 @@ using (ClientWebSocket ws = new ClientWebSocket())
 
 async Task<string> messAsync(ClientWebSocket ws, String msg)
 {
-    ArraySegment<byte> bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(msg));
+    ArraySegment<byte> bytesToSend = new(Encoding.UTF8.GetBytes(msg));
     await ws.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
-    ArraySegment<byte> bytesReceived = new ArraySegment<byte>(new byte[1024]);
+    ArraySegment<byte> bytesReceived = new(new byte[1024]);
     WebSocketReceiveResult result = await ws.ReceiveAsync(bytesReceived, CancellationToken.None);
     Console.WriteLine("vvvvvvvvv");
     Console.WriteLine(Encoding.UTF8.GetString(bytesReceived.Array, 0, result.Count));
