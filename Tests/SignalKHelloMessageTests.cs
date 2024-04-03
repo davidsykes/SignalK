@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Logic;
+using Logic.Review;
 
 namespace Tests
 {

@@ -1,4 +1,4 @@
-﻿namespace Logic
+﻿namespace Logic.Review
 {
     public class SignalKErrorException : Exception
     {

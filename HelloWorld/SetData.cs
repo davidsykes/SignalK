@@ -60,7 +60,9 @@ class DataSetter
             try
             {
                 WebSocketReceiveResult result = await ws.ReceiveAsync(bytesReceived, timeOut);
+#pragma warning disable CS8604 // Possible null reference argument.
                 return Encoding.UTF8.GetString(bytesReceived.Array, 0, result.Count);
+#pragma warning restore CS8604 // Possible null reference argument.
             }
             catch (System.Threading.Tasks.TaskCanceledException)
             {
