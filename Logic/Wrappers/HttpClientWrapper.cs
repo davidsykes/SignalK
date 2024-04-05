@@ -1,4 +1,4 @@
-﻿namespace Logic
+﻿namespace Logic.Wrappers
 {
     internal class HttpClientWrapper : IHttpClientWrapper
     {

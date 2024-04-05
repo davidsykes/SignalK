@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Logic;
+using Logic.Wrappers;
 using Moq;
 using TestHelpers;
 

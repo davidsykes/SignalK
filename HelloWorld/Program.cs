@@ -2,10 +2,10 @@
 
 Console.WriteLine("Hello, World!");
 
-//var endPoints = await SignalKEndPoints.CreateAsync("192.168.1.87");
-
 var streamingUrl = await new SignalKEndPointRetriever().RetrieveStreamingEndpoint("192.168.1.87");
-
+var dataSource = SignalKLibrary.CreateDataSource(streamingUrl);
+var value = dataSource.CreateValue<double>("home.temperature");
+value.Set(3.41);
 
 
 var _httpClient = new HttpClient();
@@ -20,10 +20,3 @@ Console.WriteLine(responseText);
 
 await DataSetter.SetData();
 await DataGetter.GetData();
-
-//SignalKWebSocket sksocket = new("192.168.1.87");
-
-//await sksocket.ProcessAsync(() =>
-//{
-//    Console.WriteLine(sksocket.Self);
-//});
