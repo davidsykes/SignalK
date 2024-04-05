@@ -10,7 +10,7 @@ namespace Tests
     {
         SignalKEndPointRetriever _retriever;
 
-
+        string _endpointsJson = """{ "endpoints":{ "v1":{ "version":"2.6.2","signalk-http":"http://192.168.1.87:3000/signalk/v1/api/","signalk-ws":"ws://192.168.1.87:3000/signalk/v1/stream","signalk-tcp":"tcp://192.168.1.87:8375"} },"server":{ "id":"signalk-server-node","version":"2.6.2"} }""";
         Mock<IHttpClientWrapper> _mockHttpClientWrapper;
 
         [Test]
@@ -18,7 +18,18 @@ namespace Tests
         {
             var ep = await _retriever.RetrieveStreamingEndpoint("server ip");
 
-            ep.Should().Be("streaming endpoint");
+            ep.Should().Be("ws://192.168.1.87:3000/signalk/v1/stream");
+        }
+
+        [Test]
+        public async Task IfTheEndpointsMessageIsMalformedAnExceptionIsThrown()
+        {
+            _mockHttpClientWrapper.Setup(m => m.GetAsync("http://server ip:3000/signalk"))
+                .Returns(Task.FromResult("random { ["));
+
+            Func<Task> action = async () => { await _retriever.RetrieveStreamingEndpoint("server ip"); };
+
+            await action.Should().ThrowAsync<SKLibraryException>().WithMessage("Streaming Endpoint not found.");
         }
 
         #region Support Code
@@ -29,14 +40,6 @@ namespace Tests
 
             _retriever = new SignalKEndPointRetriever(_mockHttpClientWrapper.Object);
         }
-
-        //protected override void SetUpData()
-        //{
-        //    base.SetUpData();
-
-        //    _testRequest = new TestRequestObject { Id = 123, Request = "Test Object" };
-        //    _testResponse = new TestResponseObject { Id = 999, Response = "Test Payload" };
-        //}
 
         protected override void SetUpMocks()
         {
@@ -49,9 +52,11 @@ namespace Tests
         {
             base.SetUpExpectations();
 
-            _mockHttpClientWrapper.Setup(m => m.GetAsync("http://server ip:3000/signalk")).Returns(Task.FromResult("get url response"));
+            _mockHttpClientWrapper.Setup(m => m.GetAsync("http://server ip:3000/signalk")).Returns(Task.FromResult(_endpointsJson));
         }
 
         #endregion
     }
 }
+
+
