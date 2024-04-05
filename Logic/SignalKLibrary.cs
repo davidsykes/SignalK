@@ -4,10 +4,10 @@ namespace Logic
 {
     public class SignalKLibrary
     {
-        public static ISignalKDataSource CreateDataSource(string streamingUrl)
+        public async static Task<ISignalKDataSource> CreateDataSource(string streamingUrl)
         {
             var ds = new SignalKDataSource(streamingUrl);
-            ds.Initialise();
+            await ds.Initialise();
             return ds;
         }
     }

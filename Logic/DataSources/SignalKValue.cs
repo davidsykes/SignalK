@@ -1,5 +1,4 @@
-﻿
-namespace Logic
+﻿namespace Logic.DataSources
 {
     public class SignalKValue
     {
