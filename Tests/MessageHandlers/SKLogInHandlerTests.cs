@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Logic;
 using Logic.Wrappers;
 using Moq;
 using System.Text.Json;
@@ -11,9 +12,11 @@ namespace Tests
     {
         SKLogInHandler _handler;
 
-        string _guid = "12345678";
-        string _userName = "user name";
-        string _password = "pass word";
+        readonly string _guid = "12345678";
+        readonly string _userName = "user name";
+        readonly string _password = "pass word";
+        readonly string _logInResponse = "{\"state\":\"COMPLETED\",\"statusCode\":200,\"login\":{\"token\":\"eyJh\"}}";
+        string _logInMessage = string.Empty;
 
         Mock<IClientWebSocketWrapper> _mockClientWebSocketWrapper;
         Mock<IGuidWrapper> _mockGuidWrapper;
@@ -21,22 +24,23 @@ namespace Tests
         [Test]
         public async Task TheLogInMessageIsSentToTheServer()
         {
-            string logInMessage = "";
-            _mockClientWebSocketWrapper.Setup(m => m.SendMessage(It.IsAny<string>()))
-                .Callback((string message) => logInMessage = message);
-
             await _handler.LogIn();
 
             _mockClientWebSocketWrapper.Verify(m => m.SendMessage(It.IsAny<string>()), Times.Once);
 
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = false
-            };
-            var logIn = JsonSerializer.Deserialize<ExpectedLogInMessage>(logInMessage, options);
+            var logIn = DeserialiseLogInFromJsonMessage(_logInMessage);
             logIn.requestid.Should().Be(_guid);
             logIn.login.username.Should().Be(_userName);
             logIn.login.password.Should().Be(_password);
+        }
+
+        [Test]
+        public async Task IfTheLogInFailsAnExceptionIsThrown()
+        {
+            SetUpLogInResponse("{\"state\":\"COMPLETED\",\"statusCode\":401,\"login\":{}}");
+
+            Func<Task> action = async () => await _handler.LogIn();
+            await action.Should().ThrowAsync<SKLibraryException>().WithMessage("Login failed.");
         }
 
         #region Support Code
@@ -60,6 +64,15 @@ namespace Tests
         {
             base.SetUpExpectations();
             _mockGuidWrapper.Setup(m => m.NewGuid()).Returns(_guid);
+            _mockClientWebSocketWrapper.Setup(m => m.SendMessage(It.IsAny<string>()))
+                .Callback((string message) => _logInMessage = message);
+            SetUpLogInResponse(_logInResponse);
+        }
+
+        void SetUpLogInResponse(string response)
+        {
+            _mockClientWebSocketWrapper.Setup(m => m.ReceiveMessage())
+                .Returns(Task.FromResult(response));
         }
 
         class ExpectedLogInMessage
@@ -72,6 +85,15 @@ namespace Tests
                 public string username { get; set; }
                 public string password { get; set; }
             }
+        }
+
+        private ExpectedLogInMessage DeserialiseLogInFromJsonMessage(string logInMessage)
+        {
+            JsonSerializerOptions options = new()
+            {
+                PropertyNameCaseInsensitive = false
+            };
+            return JsonSerializer.Deserialize<ExpectedLogInMessage>(_logInMessage, options);
         }
 
         #endregion
