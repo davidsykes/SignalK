@@ -24,7 +24,7 @@ namespace Logic.Review
             SignalKHelloMessage_? m = JsonSerializer.Deserialize<SignalKHelloMessage_>(hello);
             if (m == null)
             {
-                throw new SignalKErrorException();
+                throw new SKLibraryException();
             }
             Name = m.name;
             Version = m.version;

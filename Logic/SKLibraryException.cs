@@ -1,6 +1,6 @@
 ﻿namespace Logic
 {
-    internal class SKLibraryException : Exception
+    public class SKLibraryException : Exception
     {
         public SKLibraryException()
         {

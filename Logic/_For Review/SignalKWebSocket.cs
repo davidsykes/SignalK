@@ -36,7 +36,7 @@ namespace Logic.Review
         {
             if (_helloMessage == null)
             {
-                throw new SignalKErrorException();
+                throw new SKLibraryException();
             }
             return _helloMessage.Self;
         }

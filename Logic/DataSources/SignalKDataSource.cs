@@ -11,7 +11,7 @@ public class SignalKDataSource : ISignalKDataSource
 
     internal SignalKDataSource(string streamingUrl, string userName, string password)
     {
-        _streamingUrl = streamingUrl;
+        _streamingUrl = MakeStreamingurl(streamingUrl);
         _webSocket = new ClientWebSocketWrapper();
         var guidWrapper = new GuidWrapper();
         _logInHandler = new SKLogInHandler(userName, password, _webSocket, guidWrapper);
@@ -19,9 +19,14 @@ public class SignalKDataSource : ISignalKDataSource
 
     internal SignalKDataSource(string streamingUrl, IClientWebSocketWrapper webSocket, ISKLogInHandler logInHandler)
     {
-        _streamingUrl = streamingUrl;
+        _streamingUrl = MakeStreamingurl(streamingUrl);
         _webSocket = webSocket;
         _logInHandler = logInHandler;
+    }
+
+    private string MakeStreamingurl(string streamingUrl)
+    {
+        return streamingUrl + "?subscribe=none";
     }
 
     internal async Task Initialise()
