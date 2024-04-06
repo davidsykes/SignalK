@@ -9,11 +9,12 @@ public class SignalKDataSource : ISignalKDataSource
     readonly IClientWebSocketWrapper _webSocket;
     readonly ISKLogInHandler _logInHandler;
 
-    internal SignalKDataSource(string streamingUrl)
+    internal SignalKDataSource(string streamingUrl, string userName, string password)
     {
         _streamingUrl = streamingUrl;
         _webSocket = new ClientWebSocketWrapper();
-        _logInHandler = new SKLogInHandler();
+        var guidWrapper = new GuidWrapper();
+        _logInHandler = new SKLogInHandler(userName, password, _webSocket, guidWrapper);
     }
 
     internal SignalKDataSource(string streamingUrl, IClientWebSocketWrapper webSocket, ISKLogInHandler logInHandler)

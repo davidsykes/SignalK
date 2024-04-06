@@ -28,6 +28,12 @@ namespace Logic.Wrappers
             }
             return "";
         }
+
+        public Task SendMessage(string message)
+        {
+            ArraySegment<byte> bytesToSend = new(Encoding.UTF8.GetBytes(message));
+            return _clientWebSocket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
+        }
     }
 }
 

@@ -1,8 +1,6 @@
-﻿
-namespace Logic.MessageHandlers
+﻿namespace Logic.MessageHandlers;
+
+internal interface ISKLogInHandler
 {
-    internal interface ISKLogInHandler
-    {
-        internal Task LogIn();
-    }
+    internal Task LogIn();
 }

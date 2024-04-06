@@ -6,7 +6,7 @@ namespace Logic
     {
         public async static Task<ISignalKDataSource> CreateDataSource(string streamingUrl)
         {
-            var ds = new SignalKDataSource(streamingUrl);
+            var ds = new SignalKDataSource(streamingUrl, "logger", "logger");
             await ds.Initialise();
             return ds;
         }
