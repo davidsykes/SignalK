@@ -9,18 +9,18 @@ namespace Tests
 {
     public class SignalKDataSourceTests : TestBase
     {
-        SignalKDataSource _source;
+        ISignalKDataSource _source;
 
         readonly string _serverUrl = "Server url";
         Mock<IClientWebSocketWrapper> _mockClientWebSocket;
         Mock<ISKLogInHandler> _mockSKLogInHandler;
 
         [Test]
-        public async Task InitialiseOpensUpTheWebSocket()
+        public async Task InitialiseOpensUpTheWebSocketWithSubscribeToNone()
         {
             await _source.Initialise();
 
-            _mockClientWebSocket.Verify(m => m.ConnectAsync(_serverUrl));
+            _mockClientWebSocket.Verify(m => m.ConnectAsync($"{_serverUrl}?subscribe=none"));
         }
 
         [Test]
@@ -55,13 +55,6 @@ namespace Tests
             _mockClientWebSocket = new Mock<IClientWebSocketWrapper>();
             _mockSKLogInHandler = new Mock<ISKLogInHandler>();
         }
-
-        //protected override void SetUpExpectations()
-        //{
-        //    base.SetUpExpectations();
-
-        //    _mockHttpClientWrapper.Setup(m => m.GetAsync("http://server ip:3000/signalk")).Returns(Task.FromResult(_endpointsJson));
-        //}
 
         #endregion
     }

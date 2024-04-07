@@ -7,7 +7,7 @@ try
     var streamingUrl = await new SignalKEndPointRetriever().RetrieveStreamingEndpoint("192.168.1.87");
     var dataSource = await SignalKLibrary.CreateDataSource(streamingUrl, "logger", "logger");
     var value = dataSource.CreateValue<double>("home.temperature");
-    value.Set(3.41);
+    await value.Set(3.41);
 }
 catch (SKLibraryException ex)
 {

@@ -17,6 +17,7 @@ namespace Tests
         readonly string _password = "pass word";
         readonly string _logInResponse = "{\"state\":\"COMPLETED\",\"statusCode\":200,\"login\":{\"token\":\"eyJh\"}}";
         string _logInMessage = string.Empty;
+        JsonSerializerOptions _jsonOptions;
 
         Mock<IClientWebSocketWrapper> _mockClientWebSocketWrapper;
         Mock<IGuidWrapper> _mockGuidWrapper;
@@ -52,6 +53,15 @@ namespace Tests
             _handler = new SKLogInHandler(_userName, _password, _mockClientWebSocketWrapper.Object, _mockGuidWrapper.Object);
         }
 
+        protected override void SetUpData()
+        {
+            base.SetUpData();
+            _jsonOptions = new()
+            {
+                PropertyNameCaseInsensitive = false
+            };
+        }
+
         protected override void SetUpMocks()
         {
             base.SetUpMocks();
@@ -75,6 +85,7 @@ namespace Tests
                 .Returns(Task.FromResult(response));
         }
 
+#pragma warning disable IDE1006 // Naming Styles
         class ExpectedLogInMessage
         {
             public string requestid { get; set; }
@@ -86,14 +97,11 @@ namespace Tests
                 public string password { get; set; }
             }
         }
+#pragma warning restore IDE1006 // Naming Styles
 
         private ExpectedLogInMessage DeserialiseLogInFromJsonMessage(string logInMessage)
         {
-            JsonSerializerOptions options = new()
-            {
-                PropertyNameCaseInsensitive = false
-            };
-            return JsonSerializer.Deserialize<ExpectedLogInMessage>(_logInMessage, options);
+            return JsonSerializer.Deserialize<ExpectedLogInMessage>(_logInMessage, _jsonOptions);
         }
 
         #endregion

@@ -11,7 +11,7 @@ public class SignalKDataSource : ISignalKDataSource
 
     internal SignalKDataSource(string streamingUrl, string userName, string password)
     {
-        _streamingUrl = MakeStreamingurl(streamingUrl);
+        _streamingUrl = MakeStreamingUrl(streamingUrl);
         _webSocket = new ClientWebSocketWrapper();
         var guidWrapper = new GuidWrapper();
         _logInHandler = new SKLogInHandler(userName, password, _webSocket, guidWrapper);
@@ -19,30 +19,30 @@ public class SignalKDataSource : ISignalKDataSource
 
     internal SignalKDataSource(string streamingUrl, IClientWebSocketWrapper webSocket, ISKLogInHandler logInHandler)
     {
-        _streamingUrl = MakeStreamingurl(streamingUrl);
+        _streamingUrl = MakeStreamingUrl(streamingUrl);
         _webSocket = webSocket;
         _logInHandler = logInHandler;
     }
 
-    private string MakeStreamingurl(string streamingUrl)
+    private static string MakeStreamingUrl(string streamingUrl)
     {
         return streamingUrl + "?subscribe=none";
     }
 
-    internal async Task Initialise()
+    public async Task Initialise()
     {
         await _webSocket.ConnectAsync(_streamingUrl);
         await _webSocket.ReceiveMessage();
         await _logInHandler.LogIn();
     }
 
-    public SignalKValue CreateValue<T>(string name)
+    public ISignalKValue CreateValue<T>(string name)
     {
         throw new NotImplementedException();
     }
 
     ISignalKValue ISignalKDataSource.CreateValue<T>(string name)
     {
-        throw new NotImplementedException();
+        return new SignalKValue(name, _webSocket);
     }
 }

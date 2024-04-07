@@ -2,6 +2,6 @@
 {
     public interface ISignalKValue
     {
-        void Set(double value);
+        Task Set(double value);
     }
 }
