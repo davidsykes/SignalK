@@ -34,6 +34,11 @@ namespace Logic.Wrappers
             ArraySegment<byte> bytesToSend = new(Encoding.UTF8.GetBytes(message));
             return _clientWebSocket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
         }
+
+        public void Close()
+        {
+            _clientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal Close", CancellationToken.None);
+        }
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using Logic;
+﻿using HelloWorld;
+using Logic;
 
 Console.WriteLine("Hello, World!");
 
@@ -7,7 +8,12 @@ try
     var streamingUrl = await new SignalKEndPointRetriever().RetrieveStreamingEndpoint("192.168.1.87");
     var dataSource = await SignalKLibrary.CreateDataSource(streamingUrl, "logger", "logger");
     var value = dataSource.CreateValue<double>("home.temperature");
-    await value.Set(3.41);
+    await value.Set(3.412);
+    dataSource.Close();
+
+    var dataListener = await SignalKLibrary.CreateDataListener(streamingUrl);
+    var messageProcessor = new MessageProcessor();
+    dataListener.ProcessMessages(messageProcessor);
 }
 catch (SKLibraryException ex)
 {
@@ -25,5 +31,4 @@ var responseText = await reader.ReadToEndAsync();
 
 Console.WriteLine(responseText);
 
-await DataSetter.SetData();
 await DataGetter.GetData();

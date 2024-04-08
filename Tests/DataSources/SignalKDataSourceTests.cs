@@ -20,7 +20,7 @@ namespace Tests
         {
             await _source.Initialise();
 
-            _mockClientWebSocket.Verify(m => m.ConnectAsync($"{_serverUrl}?subscribe=none"));
+            _mockClientWebSocket.Verify(m => m.ConnectAsync(_serverUrl));
         }
 
         [Test]

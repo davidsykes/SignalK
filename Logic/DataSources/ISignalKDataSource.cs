@@ -4,5 +4,6 @@
     {
         Task Initialise();
         ISignalKValue CreateValue<T>(string name);
+        void Close();
     }
 }
