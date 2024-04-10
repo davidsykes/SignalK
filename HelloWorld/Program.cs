@@ -11,9 +11,8 @@ try
     await value.Set(3.412);
     dataSource.Close();
 
-    var dataListener = await SignalKLibrary.CreateDataListener(streamingUrl);
     var messageProcessor = new MessageProcessor();
-    dataListener.ProcessMessages(messageProcessor);
+    SignalKLibrary.ProcessUpdates(streamingUrl, messageProcessor);
 }
 catch (SKLibraryException ex)
 {

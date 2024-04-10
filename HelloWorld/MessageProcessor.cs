@@ -1,8 +1,8 @@
-﻿using Logic.DataListener;
+﻿using Logic;
 
 namespace HelloWorld
 {
-    internal class MessageProcessor: ISignalKMessageProcessor
+    internal class MessageProcessor: ISignalKUpdateHandler
     {
     }
 }
