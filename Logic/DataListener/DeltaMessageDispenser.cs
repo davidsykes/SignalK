@@ -20,7 +20,7 @@ namespace Logic.DataListener
             _webSocket = webSocket;
         }
 
-        public async Task DispenseMessages(IDeltaMessageConverter messageConverter)
+        async Task IDeltaMessageDispenser.DispenseMessages(IDeltaMessageConverter messageConverter)
         {
             await _webSocket.ConnectAsync(_streamingUrl);
             await _webSocket.ReceiveMessage();
@@ -28,7 +28,7 @@ namespace Logic.DataListener
             await DispenseAllMessages(messageConverter);
         }
 
-        public async Task DispenseAllMessages(IDeltaMessageConverter messageConverter)
+        internal async Task DispenseAllMessages(IDeltaMessageConverter messageConverter)
         {
             while (true)
             {
@@ -37,7 +37,7 @@ namespace Logic.DataListener
             }
         }
 
-        public void Close()
+        internal void Close()
         {
             _webSocket.Close();
         }

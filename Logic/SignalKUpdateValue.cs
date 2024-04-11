@@ -1,12 +1,12 @@
 ﻿namespace Logic
 {
-    public class SignalKUpdateValue
+    internal class SignalKUpdateValue
     {
-        public DateTime TimeStamp { get; internal set; }
-        public string Path { get; internal set; }
-        public object Value { get; internal set; }
+        internal DateTime TimeStamp { get; set; }
+        internal string Path { get; set; }
+        internal object Value { get; set; }
 
-        public SignalKUpdateValue(DateTime timeStamp, string path, object value)
+        internal SignalKUpdateValue(DateTime timeStamp, string path, object value)
         {
             TimeStamp = timeStamp;
             Path = path;

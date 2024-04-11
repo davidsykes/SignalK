@@ -3,7 +3,7 @@ using Logic.Wrappers;
 
 namespace Logic.DataSources;
 
-public class SignalKDataSource : ISignalKDataSource
+internal class SignalKDataSource : ISignalKDataSource
 {
     readonly string _streamingUrl;
     readonly IClientWebSocketWrapper _webSocket;
@@ -31,7 +31,7 @@ public class SignalKDataSource : ISignalKDataSource
         await _logInHandler.LogIn();
     }
 
-    public ISignalKValue CreateValue<T>(string name)
+    internal ISignalKValue CreateValue<T>(string name)
     {
         throw new NotImplementedException();
     }
@@ -41,7 +41,7 @@ public class SignalKDataSource : ISignalKDataSource
         return new SignalKValue(name, _webSocket);
     }
 
-    public void Close()
+    void ISignalKDataSource.Close()
     {
         _webSocket.Close();
     }

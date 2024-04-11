@@ -6,12 +6,12 @@ namespace Logic.DataListener
     {
         private ISignalKUpdateHandler _updateHandler;
 
-        public UpdateDispenser(ISignalKUpdateHandler updateHandler)
+        internal UpdateDispenser(ISignalKUpdateHandler updateHandler)
         {
             _updateHandler = updateHandler;
         }
 
-        public void DispenseUpdates(SignalKDeltaMessage deltaMessage)
+        void IUpdateDispenser.DispenseUpdates(SignalKDeltaMessage deltaMessage)
         {
             throw new NotImplementedException();
         }

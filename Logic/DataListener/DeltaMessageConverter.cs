@@ -39,13 +39,13 @@ namespace Logic.DataListener
             public string context { get; set; }
             public IList<MessageUpdates> updates { get; set; }
 
-            public class MessageUpdates
+            internal class MessageUpdates
             {
                 public string timestamp { get; set; }
                 public IList<UpdateValue> values { get; set; }
             }
 
-            public class UpdateValue
+            internal class UpdateValue
             {
                 public string path { get; set; }
                 public object value { get; set; }

@@ -2,7 +2,7 @@
 {
     internal class GuidWrapper : IGuidWrapper
     {
-        public string NewGuid()
+        string IGuidWrapper.NewGuid()
         {
             return Guid.NewGuid().ToString();
         }

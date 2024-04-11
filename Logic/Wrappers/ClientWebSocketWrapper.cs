@@ -7,18 +7,18 @@ namespace Logic.Wrappers
     {
         private readonly ClientWebSocket _clientWebSocket;
 
-        public ClientWebSocketWrapper()
+        internal ClientWebSocketWrapper()
         {
             _clientWebSocket = new ClientWebSocket();
         }
 
-        public async Task ConnectAsync(string serverUrl)
+        async Task IClientWebSocketWrapper.ConnectAsync(string serverUrl)
         {
             Uri serverUri = new(serverUrl);
             await _clientWebSocket.ConnectAsync(serverUri, CancellationToken.None);
         }
 
-        public async Task<string> ReceiveMessage()
+        async Task<string> IClientWebSocketWrapper.ReceiveMessage()
         {
             ArraySegment<byte> bytesReceived = new(new byte[1024]);
             WebSocketReceiveResult result = await _clientWebSocket.ReceiveAsync(bytesReceived, CancellationToken.None);
@@ -29,13 +29,13 @@ namespace Logic.Wrappers
             return "";
         }
 
-        public Task SendMessage(string message)
+        Task IClientWebSocketWrapper.SendMessage(string message)
         {
             ArraySegment<byte> bytesToSend = new(Encoding.UTF8.GetBytes(message));
             return _clientWebSocket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
-        public void Close()
+        void IClientWebSocketWrapper.Close()
         {
             _clientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal Close", CancellationToken.None);
         }

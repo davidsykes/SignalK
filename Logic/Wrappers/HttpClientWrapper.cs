@@ -4,7 +4,7 @@
     {
         private readonly HttpClient _httpClient = new();
 
-        public async Task<string> GetAsync(string endpointsUrl)
+        async Task<string> IHttpClientWrapper.GetAsync(string endpointsUrl)
         {
             var response = await _httpClient.GetAsync(endpointsUrl);
             var responseContent = response.Content;

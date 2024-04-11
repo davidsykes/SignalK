@@ -8,7 +8,7 @@ namespace Logic.DataSources
         private readonly string _name = name;
         private readonly IClientWebSocketWrapper _webSocket = webSocket;
 
-        public async Task Set(double value)
+        async Task ISignalKValue.Set(double value)
         {
             var valueMessage = new UpdatesMessage.ValuesMessage(_name, value);
             var updateMessage = new UpdatesMessage.UpdateMessage(new List<UpdatesMessage.ValuesMessage> { valueMessage });
@@ -20,7 +20,7 @@ namespace Logic.DataSources
 
         class UpdatesMessage
         {
-            public IList<UpdateMessage> updates { get; set; }
+            internal IList<UpdateMessage> updates { get; set; }
 
             internal UpdatesMessage(IList<UpdateMessage> updates)
             {
@@ -29,7 +29,7 @@ namespace Logic.DataSources
 
             internal class UpdateMessage
             {
-                public IList<ValuesMessage> values { get; set; }
+                internal IList<ValuesMessage> values { get; set; }
 
                 internal UpdateMessage(IList<ValuesMessage> values)
                 {
@@ -39,8 +39,8 @@ namespace Logic.DataSources
 
             internal class ValuesMessage
             {
-                public string path { get; set; }
-                public double value { get; set; }
+                internal string path { get; set; }
+                internal double value { get; set; }
 
                 internal ValuesMessage(string path, double value)
                 {

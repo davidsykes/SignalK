@@ -38,19 +38,19 @@ internal class SKLogInHandler(string userName, string password,
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     class LogInMessage(string requestId, string userName, string password)
     {
-        public string requestid { get; set; } = requestId;
-        public LogIn login { get; set; } = new(userName, password);
+        internal string requestid { get; set; } = requestId;
+        internal LogIn login { get; set; } = new(userName, password);
 
-        public class LogIn(string userName, string password)
+        internal class LogIn(string userName, string password)
         {
-            public string username { get; set; } = userName;
-            public string password { get; set; } = password;
+            internal string username { get; set; } = userName;
+            internal string password { get; set; } = password;
         }
     }
     class LogInResponse
     {
-        public string state { get; set; }
-        public int statusCode { get; set; }
+        internal string state { get; set; }
+        internal int statusCode { get; set; }
     }
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

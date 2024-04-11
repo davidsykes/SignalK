@@ -2,16 +2,16 @@
 {
     public class SKLibraryException : Exception
     {
-        public SKLibraryException()
+        internal SKLibraryException()
         {
         }
 
-        public SKLibraryException(string message)
+        internal SKLibraryException(string message)
             : base(message)
         {
         }
 
-        public SKLibraryException(string message, Exception inner)
+        internal SKLibraryException(string message, Exception inner)
             : base(message, inner)
         {
         }
