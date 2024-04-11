@@ -1,5 +1,4 @@
-﻿using Logic.DataListener;
-using Logic.DataSources;
+﻿using Logic.DataSources;
 
 namespace Logic
 {
@@ -13,11 +12,11 @@ namespace Logic
             return ds;
         }
 
-        public async static Task<ISignalKDataListener> CreateDataListener(string streamingUrl)
+        public static void ProcessUpdates(string streamingUrl, ISignalKUpdateHandler signalKUpdateHandler)
         {
-            var ds = new SignalKDataListener(streamingUrl);
-            await ds.Initialise();
-            return ds;
+            //var ds = new SignalKDataListener(streamingUrl);
+            //await ds.Initialise();
+            //return ds;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Logic.DataListener.Interfaces
 {
-    public interface IDeltaMessageDispenser
+    internal interface IDeltaMessageDispenser
     {
         Task DispenseMessages(IDeltaMessageConverter messageProcessor);
     }
