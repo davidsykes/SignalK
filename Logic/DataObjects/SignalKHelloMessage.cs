@@ -3,31 +3,18 @@ using System.Text.Json.Serialization;
 
 namespace Logic.Review
 {
-    class SignalKHelloMessage_
-    {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
-        [JsonPropertyName("name")]
-        internal string Name { get; set; }
-        [JsonPropertyName("version")]
-        internal string Version { get; set; }
-        [JsonPropertyName("self")]
-        internal string Self { get; set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    }
-
     internal class SignalKHelloMessage
     {
-        internal string Name { get; set; }
-        internal string Version { get; set; }
-        internal string Self { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = string.Empty;
+        [JsonPropertyName("version")]
+        public string Version { get; set; } = string.Empty;
+        [JsonPropertyName("self")]
+        public string Self { get; set; } = string.Empty;
 
-        internal SignalKHelloMessage(string hello)
+        public static SignalKHelloMessage DeserialiseSignalKHelloMessage(string json)
         {
-            SignalKHelloMessage_? m = JsonSerializer.Deserialize<SignalKHelloMessage_>(hello) ?? throw new SKLibraryException();
-            Name = m.Name;
-            Version = m.Version;
-            Self = m.Self;
+            return JsonSerializer.Deserialize<SignalKHelloMessage>(json) ?? throw new SKLibraryException("Malformed Hello Message.");
         }
     }
 }
