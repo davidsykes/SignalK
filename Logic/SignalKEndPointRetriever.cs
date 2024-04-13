@@ -7,20 +7,20 @@ namespace Logic
     class V1
     {
         [JsonPropertyName("version")]
-        internal String? Version { get; set; }
+        public String? Version { get; set; }
         [JsonPropertyName("signalk-http")]
-        internal String? SignalkHttp { get; set; }
+        public String? SignalkHttp { get; set; }
         [JsonPropertyName("signalk-ws")]
-        internal String? SignalkWs { get; set; }
+        public String? SignalkWs { get; set; }
     }
     class Endpoints
     {
-        internal V1? v1 { get; set; }
+        public V1? v1 { get; set; }
     }
     internal class EndpointsMessage
     {
         [JsonPropertyName("endpoints")]
-        internal Endpoints? Endpoints { get; set; }
+        public Endpoints? Endpoints { get; set; }
     }
 
     internal class SignalKEndPointRetriever
