@@ -25,6 +25,17 @@ namespace Tests
             _dispensedUpdate.Should().Be(_convertedUpdateMessage);
         }
 
+        [Test]
+        public void IfTheConversionFailsTheMessageIsLogged()
+        {
+            _mockDeltaMessageConverter.Setup(m => m.ConvertMessage("server message"))
+                .Throws(new Exception());
+
+            _dispenser.ConvertAndDispenseMessage("server message");
+
+            _mockSignalKUpdateHandler.Verify(m => m.InvalidServerMessage("server message"));
+        }
+
         #region Support Code
 
         protected override void SetUpObjectUnderTest()
@@ -54,10 +65,7 @@ namespace Tests
         {
             base.SetUpData();
 
-            _convertedUpdateMessage = new SignalKDeltaMessage
-            {
-                Context = "Fred"
-            };
+            _convertedUpdateMessage = new SignalKDeltaMessage("Fred", []);
         }
 
         #endregion

@@ -4,8 +4,8 @@ namespace Logic.DataListener
 {
     internal class SignalKMessageDispenser : ISignalKMessageDispenser
     {
-        private IDeltaMessageConverter _deltaMessageConverter;
-        private ISignalKUpdateHandler _updateHandler;
+        readonly private IDeltaMessageConverter _deltaMessageConverter;
+        readonly private ISignalKUpdateHandler _updateHandler;
 
         internal SignalKMessageDispenser(IDeltaMessageConverter deltaMessageConverter, ISignalKUpdateHandler updateHandler)
         {
@@ -15,8 +15,15 @@ namespace Logic.DataListener
 
         void ISignalKMessageDispenser.ConvertAndDispenseMessage(string signalKMessage)
         {
-            var message = _deltaMessageConverter.ConvertMessage(signalKMessage);
-            _updateHandler.Update(message);
+            try
+            {
+                var message = _deltaMessageConverter.ConvertMessage(signalKMessage);
+                _updateHandler.Update(message);
+            }
+            catch (Exception)
+            {
+                _updateHandler.InvalidServerMessage(signalKMessage);
+            }
         }
     }
 }
