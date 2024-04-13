@@ -1,4 +1,6 @@
-﻿namespace Logic.DataListener.Interfaces
+﻿using Logic.DataObjects;
+
+namespace Logic.DataListener.Interfaces
 {
     internal interface IDeltaMessageConverter
     {
