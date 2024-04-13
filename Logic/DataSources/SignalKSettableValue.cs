@@ -3,12 +3,12 @@ using System.Text.Json;
 
 namespace Logic.DataSources
 {
-    internal class SignalKValue(string name, IClientWebSocketWrapper webSocket) : ISignalKValue
+    internal class SignalKSettableValue(string name, IClientWebSocketWrapper webSocket) : ISignalKSettableValue
     {
         private readonly string _name = name;
         private readonly IClientWebSocketWrapper _webSocket = webSocket;
 
-        async Task ISignalKValue.Set(double value)
+        async Task ISignalKSettableValue.Set(double value)
         {
             var valueMessage = new UpdatesMessage.ValuesMessage(_name, value);
             var updateMessage = new UpdatesMessage.UpdateMessage(new List<UpdatesMessage.ValuesMessage> { valueMessage });

@@ -8,20 +8,20 @@ using TestHelpers;
 #nullable disable
 namespace Tests
 {
-    public class DeltaMessageDispenserTests : TestBase
+    public class SignalKMessageHandlerTests : TestBase
     {
-        private IDeltaMessageDispenser _dispenser;
+        private ISignalKMessageHandler _handler;
 
         readonly string _serverUrl = "Server url";
         Queue<string> _messagesFromTheServer;
         IList<string> _messagesDispensed;
         Mock<IClientWebSocketWrapper> _mockClientWebSocket;
-        Mock<IDeltaMessageConverter> _mockMessageConverter;
+        Mock<ISignalKMessageDispenser> _mockSignalKMessageDispenser;
 
         [Test]
         public async Task InitialiseOpensUpTheWebSocket()
         {
-            Func<Task> action = () => _dispenser.DispenseMessages(_mockMessageConverter.Object);
+            Func<Task> action = () => _handler.GetMessagesFromTheSignalKServerAndPassThemToTheSignalKMessageDispenser(_mockSignalKMessageDispenser.Object);
             await action.Should().ThrowAsync<EndOfTestMessagesException>();
 
             _mockClientWebSocket.Verify(m => m.ConnectAsync(_serverUrl));
@@ -30,7 +30,7 @@ namespace Tests
         [Test]
         public async Task InitialiseReceivesTheHelloMessage()
         {
-            Func<Task> action = () => _dispenser.DispenseMessages(_mockMessageConverter.Object);
+            Func<Task> action = () => _handler.GetMessagesFromTheSignalKServerAndPassThemToTheSignalKMessageDispenser(_mockSignalKMessageDispenser.Object);
             await action.Should().ThrowAsync<EndOfTestMessagesException>();
 
             _mockClientWebSocket.Verify(m => m.ReceiveMessage());
@@ -43,7 +43,7 @@ namespace Tests
             _messagesFromTheServer.Enqueue("Message 2");
             _messagesFromTheServer.Enqueue("Message 3");
 
-            Func<Task> action = () => _dispenser.DispenseMessages(_mockMessageConverter.Object);
+            Func<Task> action = () => _handler.GetMessagesFromTheSignalKServerAndPassThemToTheSignalKMessageDispenser(_mockSignalKMessageDispenser.Object);
             await action.Should().ThrowAsync<EndOfTestMessagesException>();
 
             _messagesDispensed.Count.Should().Be(3);
@@ -58,7 +58,7 @@ namespace Tests
         {
             base.SetUpObjectUnderTest();
 
-            _dispenser = new DeltaMessageDispenser(_serverUrl, _mockClientWebSocket.Object);
+            _handler = new SignalKMessageHandler(_serverUrl, _mockClientWebSocket.Object);
         }
 
         protected override void SetUpMocks()
@@ -66,7 +66,7 @@ namespace Tests
             base.SetUpMocks();
 
             _mockClientWebSocket = new Mock<IClientWebSocketWrapper>();
-            _mockMessageConverter = new Mock<IDeltaMessageConverter>();
+            _mockSignalKMessageDispenser = new Mock<ISignalKMessageDispenser>();
         }
 
         protected override void SetUpData()
@@ -82,7 +82,7 @@ namespace Tests
             base.SetUpExpectations();
             _mockClientWebSocket.Setup(m => m.ReceiveMessage())
                 .Returns(() => Task.FromResult(GetNextMessageFromTheMockServer()));
-            _mockMessageConverter.Setup(m => m.ConvertMessage(It.IsAny<string>()))
+            _mockSignalKMessageDispenser.Setup(m => m.ConvertAndDispenseMessage(It.IsAny<string>()))
                 .Callback((string message) => _messagesDispensed.Add(message));
         }
 

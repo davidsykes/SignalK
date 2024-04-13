@@ -23,11 +23,11 @@ namespace Logic
         internal Endpoints? Endpoints { get; set; }
     }
 
-    public class SignalKEndPointRetriever
+    internal class SignalKEndPointRetriever
     {
         readonly IHttpClientWrapper _httpClientWrapper;
 
-        public SignalKEndPointRetriever()
+        internal SignalKEndPointRetriever()
         {
             _httpClientWrapper = new HttpClientWrapper();
         }
@@ -37,7 +37,7 @@ namespace Logic
             _httpClientWrapper = httpClientWrapper;
         }
 
-        public async Task<string> RetrieveStreamingEndpoint(string serverIp)
+        internal async Task<string> RetrieveStreamingEndpoint(string serverIp)
         {
             var endpointsUrl = $"http://{serverIp}:3000/signalk";
             var endpointsJson = await _httpClientWrapper.GetAsync(endpointsUrl);

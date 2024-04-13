@@ -5,7 +5,8 @@ Console.WriteLine("Hello, World!");
 
 try
 {
-    var streamingUrl = await new SignalKEndPointRetriever().RetrieveStreamingEndpoint("192.168.1.87");
+    var library = new SignalKLibrary();
+    var streamingUrl = await library.RetrieveStreamingEndpoint("192.168.1.87");
     var dataSource = await SignalKLibrary.CreateDataSource(streamingUrl, "logger", "logger");
     var value = dataSource.CreateValue<double>("home.temperature");
     await value.Set(3.412);

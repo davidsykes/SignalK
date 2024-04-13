@@ -1,6 +1,6 @@
 ﻿namespace Logic.DataSources
 {
-    public interface ISignalKValue
+    public interface ISignalKSettableValue
     {
         Task Set(double value);
     }

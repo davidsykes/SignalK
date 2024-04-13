@@ -1,8 +1,10 @@
 using FluentAssertions;
 using Logic;
+using Logic.MessageHandlers;
 using Logic.Wrappers;
 using Moq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using TestHelpers;
 
 #nullable disable
@@ -10,7 +12,7 @@ namespace Tests
 {
     public class SKLogInHandlerTests : TestBase
     {
-        SKLogInHandler _handler;
+        ISKLogInHandler _handler;
 
         readonly string _guid = "12345678";
         readonly string _userName = "user name";
@@ -30,9 +32,9 @@ namespace Tests
             _mockClientWebSocketWrapper.Verify(m => m.SendMessage(It.IsAny<string>()), Times.Once);
 
             var logIn = DeserialiseLogInFromJsonMessage(_logInMessage);
-            logIn.requestid.Should().Be(_guid);
-            logIn.login.username.Should().Be(_userName);
-            logIn.login.password.Should().Be(_password);
+            logIn.RequestId.Should().Be(_guid);
+            logIn.Login.UserName.Should().Be(_userName);
+            logIn.Login.Password.Should().Be(_password);
         }
 
         [Test]
@@ -85,19 +87,21 @@ namespace Tests
                 .Returns(Task.FromResult(response));
         }
 
-#pragma warning disable IDE1006 // Naming Styles
         class ExpectedLogInMessage
         {
-            public string requestid { get; set; }
-            public LogIn login { get; set; }
+            [JsonPropertyName("requestid")]
+            public string RequestId { get; set; }
+            [JsonPropertyName("login")]
+            public LogIn Login { get; set; }
 
             public class LogIn
             {
-                public string username { get; set; }
-                public string password { get; set; }
+                [JsonPropertyName("username")]
+                public string UserName { get; set; }
+                [JsonPropertyName("password")]
+                public string Password { get; set; }
             }
         }
-#pragma warning restore IDE1006 // Naming Styles
 
         private ExpectedLogInMessage DeserialiseLogInFromJsonMessage(string logInMessage)
         {

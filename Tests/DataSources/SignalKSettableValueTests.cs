@@ -10,9 +10,9 @@ using TestHelpers;
 #nullable disable
 namespace Tests
 {
-    public class SignalKValueTests : TestBase
+    public class SignalKSettableValueTests : TestBase
     {
-        ISignalKValue _value;
+        ISignalKSettableValue _value;
 
         string _messageSent = "";
         JsonSerializerOptions _jsonOptions;
@@ -34,7 +34,7 @@ namespace Tests
         {
             base.SetUpObjectUnderTest();
 
-            _value = new SignalKValue("value.name", _mockClientWebSocket.Object);
+            _value = new SignalKSettableValue("value.name", _mockClientWebSocket.Object);
         }
 
         protected override void SetUpData()

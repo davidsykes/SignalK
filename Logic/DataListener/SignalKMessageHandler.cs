@@ -3,37 +3,37 @@ using Logic.Wrappers;
 
 namespace Logic.DataListener
 {
-    internal class DeltaMessageDispenser : IDeltaMessageDispenser
+    internal class SignalKMessageHandler : ISignalKMessageHandler
     {
         readonly string _streamingUrl;
         readonly IClientWebSocketWrapper _webSocket;
 
-        internal DeltaMessageDispenser(string streamingUrl)
+        internal SignalKMessageHandler(string streamingUrl)
         {
             _streamingUrl = streamingUrl;
             _webSocket = new ClientWebSocketWrapper();
         }
 
-        internal DeltaMessageDispenser(string streamingUrl, IClientWebSocketWrapper webSocket)
+        internal SignalKMessageHandler(string streamingUrl, IClientWebSocketWrapper webSocket)
         {
             _streamingUrl = streamingUrl;
             _webSocket = webSocket;
         }
 
-        async Task IDeltaMessageDispenser.DispenseMessages(IDeltaMessageConverter messageConverter)
+        async Task ISignalKMessageHandler.GetMessagesFromTheSignalKServerAndPassThemToTheSignalKMessageDispenser(ISignalKMessageDispenser messageDispenser)
         {
             await _webSocket.ConnectAsync(_streamingUrl);
             await _webSocket.ReceiveMessage();
 
-            await DispenseAllMessages(messageConverter);
+            await DispenseAllMessages(messageDispenser);
         }
 
-        internal async Task DispenseAllMessages(IDeltaMessageConverter messageConverter)
+        internal async Task DispenseAllMessages(ISignalKMessageDispenser messageDispenser)
         {
             while (true)
             {
                 var message = await _webSocket.ReceiveMessage();
-                messageConverter.ConvertMessage(message);
+                messageDispenser.ConvertAndDispenseMessage(message);
             }
         }
 

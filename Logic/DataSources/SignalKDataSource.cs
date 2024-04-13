@@ -24,21 +24,16 @@ internal class SignalKDataSource : ISignalKDataSource
         _logInHandler = logInHandler;
     }
 
-    public async Task Initialise()
+    async Task ISignalKDataSource.Initialise()
     {
         await _webSocket.ConnectAsync(_streamingUrl);
         await _webSocket.ReceiveMessage();
         await _logInHandler.LogIn();
     }
 
-    internal ISignalKValue CreateValue<T>(string name)
+    ISignalKSettableValue ISignalKDataSource.CreateValue<T>(string name)
     {
-        throw new NotImplementedException();
-    }
-
-    ISignalKValue ISignalKDataSource.CreateValue<T>(string name)
-    {
-        return new SignalKValue(name, _webSocket);
+        return new SignalKSettableValue(name, _webSocket);
     }
 
     void ISignalKDataSource.Close()
