@@ -39,24 +39,24 @@ internal class SKLogInHandler(string userName, string password,
     class LogInMessage(string requestId, string userName, string password)
     {
         [JsonPropertyName("requestid")]
-        internal string RequestId { get; set; } = requestId;
+        public string RequestId { get; set; } = requestId;
         [JsonPropertyName("login")]
-        internal LogIn Login { get; set; } = new(userName, password);
+        public LogIn Login { get; set; } = new(userName, password);
 
         internal class LogIn(string userName, string password)
         {
             [JsonPropertyName("username")]
-            internal string Username { get; set; } = userName;
+            public string Username { get; set; } = userName;
             [JsonPropertyName("password")]
-            internal string Password { get; set; } = password;
+            public string Password { get; set; } = password;
         }
     }
     class LogInResponse
     {
         [JsonPropertyName("state")]
-        internal string State { get; set; }
-        [JsonPropertyName("statuscode")]
-        internal int StatusCode { get; set; }
+        public string State { get; set; }
+        [JsonPropertyName("statusCode")]
+        public int StatusCode { get; set; }
     }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 }

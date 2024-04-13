@@ -1,5 +1,6 @@
 ﻿using Logic.Wrappers;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Logic.DataSources
 {
@@ -20,32 +21,36 @@ namespace Logic.DataSources
 
         class UpdatesMessage
         {
-            internal IList<UpdateMessage> updates { get; set; }
+            [JsonPropertyName("updates")]
+            public IList<UpdateMessage> Updates { get; set; }
 
             internal UpdatesMessage(IList<UpdateMessage> updates)
             {
-                this.updates = updates;
+                this.Updates = updates;
             }
 
             internal class UpdateMessage
             {
-                internal IList<ValuesMessage> values { get; set; }
+                [JsonPropertyName("values")]
+                public IList<ValuesMessage> Values { get; set; }
 
                 internal UpdateMessage(IList<ValuesMessage> values)
                 {
-                    this.values = values;
+                    this.Values = values;
                 }
             }
 
             internal class ValuesMessage
             {
-                internal string path { get; set; }
-                internal double value { get; set; }
+                [JsonPropertyName("path")]
+                public string Path { get; set; }
+                [JsonPropertyName("value")]
+                public double Value { get; set; }
 
                 internal ValuesMessage(string path, double value)
                 {
-                    this.path = path;
-                    this.value = value;
+                    this.Path = path;
+                    this.Value = value;
                 }
             }
         }
