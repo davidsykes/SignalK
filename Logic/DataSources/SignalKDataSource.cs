@@ -1,4 +1,5 @@
-﻿using Logic.MessageHandlers;
+﻿using Logic.Interfaces;
+using Logic.MessageHandlers;
 using Logic.Wrappers;
 
 namespace Logic.DataSources;
@@ -9,10 +10,10 @@ internal class SignalKDataSource : ISignalKDataSource
     readonly IClientWebSocketWrapper _webSocket;
     readonly ISKLogInHandler _logInHandler;
 
-    internal SignalKDataSource(string streamingUrl, string userName, string password)
+    internal SignalKDataSource(string streamingUrl, string userName, string password, IMessageLogger? messageLogger)
     {
         _streamingUrl = streamingUrl;
-        _webSocket = new ClientWebSocketWrapper();
+        _webSocket = new ClientWebSocketWrapper(messageLogger);
         var guidWrapper = new GuidWrapper();
         _logInHandler = new SKLogInHandler(userName, password, _webSocket, guidWrapper);
     }

@@ -1,6 +1,7 @@
 ﻿namespace Logic.Interfaces
 {
-    internal interface IMessageLogger
+    public interface IMessageLogger
     {
+        void LogMessage(string message);
     }
 }

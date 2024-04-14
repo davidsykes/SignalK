@@ -1,6 +1,7 @@
 ﻿using Logic.DataListener;
 using Logic.DataListener.Interfaces;
 using Logic.DataSources;
+using Logic.Interfaces;
 
 namespace Logic
 {
@@ -14,10 +15,11 @@ namespace Logic
             return _signalKEndPointRetriever.RetrieveStreamingEndpoint(serverIp);
         }
 
-        public static async Task<ISignalKDataSource> CreateDataSource(string streamingUrl, string userName, string password)
+        public static async Task<ISignalKDataSource> CreateDataSource(
+            string streamingUrl, string userName, string password, IMessageLogger? messageLogger = null)
         {
             streamingUrl += "?subscribe=none";
-            ISignalKDataSource ds = new SignalKDataSource(streamingUrl, userName, password);
+            ISignalKDataSource ds = new SignalKDataSource(streamingUrl, userName, password, messageLogger);
             await ds.Initialise();
             return ds;
         }

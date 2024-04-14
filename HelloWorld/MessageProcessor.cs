@@ -7,12 +7,17 @@ namespace HelloWorld
     {
         public void InvalidServerMessage(string message)
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"INVALID: {message}");
         }
 
         public void Update(SignalKDeltaMessage signalKDeltaMessage)
         {
-            throw new NotImplementedException();
+            foreach (var update in signalKDeltaMessage.Updates)
+            {
+                Console.WriteLine(update.TimeStamp.ToString());
+                foreach (var value in update.Values)
+                    Console.WriteLine($"\t{value.Path} => {value.Value}");
+            }
         }
     }
 }

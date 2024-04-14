@@ -9,9 +9,10 @@ namespace Logic.Wrappers
         private readonly ClientWebSocket _clientWebSocket;
         private readonly IMessageLogger? _messageLogger;
 
-        internal ClientWebSocketWrapper()
+        internal ClientWebSocketWrapper(IMessageLogger? messageLogger)
         {
             _clientWebSocket = new ClientWebSocket();
+            _messageLogger = messageLogger;
         }
 
         async Task IClientWebSocketWrapper.ConnectAsync(string serverUrl)
@@ -21,6 +22,13 @@ namespace Logic.Wrappers
         }
 
         async Task<string> IClientWebSocketWrapper.ReceiveMessage()
+        {
+            var message = await ReceiveMessageImp();
+            LogMessage("RECV", message);
+            return message;
+        }
+
+        async Task<string> ReceiveMessageImp()
         {
             ArraySegment<byte> bytesReceived = new(new byte[1024]);
             WebSocketReceiveResult result = await _clientWebSocket.ReceiveAsync(bytesReceived, CancellationToken.None);
@@ -33,6 +41,7 @@ namespace Logic.Wrappers
 
         Task IClientWebSocketWrapper.SendMessage(string message)
         {
+            LogMessage("SEND", message);
             ArraySegment<byte> bytesToSend = new(Encoding.UTF8.GetBytes(message));
             return _clientWebSocket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
         }
@@ -40,6 +49,18 @@ namespace Logic.Wrappers
         void IClientWebSocketWrapper.Close()
         {
             _clientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal Close", CancellationToken.None);
+        }
+
+        void LogMessage(string type, string message)
+        {
+            if (_messageLogger != null)
+            {
+                try
+                {
+                    _messageLogger.LogMessage($"{type} {message}");
+                }
+                catch { }
+            }
         }
     }
 }
