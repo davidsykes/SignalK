@@ -17,8 +17,8 @@ namespace Tests
         readonly string _guid = "12345678";
         readonly string _userName = "user name";
         readonly string _password = "pass word";
-        readonly string _logInResponse = "{\"state\":\"COMPLETED\",\"statusCode\":200,\"login\":{\"token\":\"eyJh\"}}";
         string _logInMessage = string.Empty;
+        readonly string _logInResponse = "{\"state\":\"COMPLETED\",\"statusCode\":200,\"login\":{\"token\":\"eyJh\"}}";
         JsonSerializerOptions _jsonOptions;
 
         Mock<IClientWebSocketWrapper> _mockClientWebSocketWrapper;
@@ -31,7 +31,7 @@ namespace Tests
 
             _mockClientWebSocketWrapper.Verify(m => m.SendMessage(It.IsAny<string>()), Times.Once);
 
-            var logIn = DeserialiseLogInFromJsonMessage(_logInMessage);
+            var logIn = DeserialiseLogInFromJsonMessage();
             logIn.RequestId.Should().Be(_guid);
             logIn.Login.UserName.Should().Be(_userName);
             logIn.Login.Password.Should().Be(_password);
@@ -103,7 +103,7 @@ namespace Tests
             }
         }
 
-        private ExpectedLogInMessage DeserialiseLogInFromJsonMessage(string logInMessage)
+        private ExpectedLogInMessage DeserialiseLogInFromJsonMessage()
         {
             return JsonSerializer.Deserialize<ExpectedLogInMessage>(_logInMessage, _jsonOptions);
         }

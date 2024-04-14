@@ -22,7 +22,11 @@ namespace Logic.DataListener
             }
             catch (Exception)
             {
-                _updateHandler.InvalidServerMessage(signalKMessage);
+                try
+                {
+                    _updateHandler.InvalidServerMessage(signalKMessage);
+                }
+                catch { }
             }
         }
     }

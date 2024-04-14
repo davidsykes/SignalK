@@ -22,12 +22,12 @@ namespace Logic
             return ds;
         }
 
-        public static void ProcessUpdates(string streamingUrl, ISignalKUpdateHandler signalKUpdateHandler)
+        public static Task ProcessUpdates(string streamingUrl, ISignalKUpdateHandler signalKUpdateHandler)
         {
             ISignalKMessageHandler mh = new SignalKMessageHandler(streamingUrl);
             var messageConverter = new DeltaMessageConverter();
             ISignalKMessageDispenser signalKMessageDispenser = new SignalKMessageDispenser(messageConverter, signalKUpdateHandler);
-            mh.GetMessagesFromTheSignalKServerAndPassThemToTheSignalKMessageDispenser(signalKMessageDispenser);
+            return mh.GetMessagesFromTheSignalKServerAndPassThemToTheSignalKMessageDispenser(signalKMessageDispenser);
         }
     }
 }

@@ -13,7 +13,7 @@ try
     dataSource.Close();
 
     var messageProcessor = new MessageProcessor();
-    SignalKLibrary.ProcessUpdates(streamingUrl, messageProcessor);
+    await SignalKLibrary.ProcessUpdates(streamingUrl, messageProcessor);
 }
 catch (SKLibraryException ex)
 {

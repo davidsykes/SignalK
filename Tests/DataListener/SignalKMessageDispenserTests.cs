@@ -36,6 +36,30 @@ namespace Tests
             _mockSignalKUpdateHandler.Verify(m => m.InvalidServerMessage("server message"));
         }
 
+        [Test]
+        public void IfTheUpdateHandlerThrowsAnExceptionItIsIgnored()
+        {
+            _mockSignalKUpdateHandler.Setup(m => m.Update(It.IsAny<SignalKDeltaMessage>()))
+            .Throws(new Exception("Oops"));
+
+            Action action = () => _dispenser.ConvertAndDispenseMessage("server message");
+
+            action.Should().NotThrow();
+        }
+
+        [Test]
+        public void IfTheInvalidServerMessageHandlerThrowsAnExceptionItIsIgnored()
+        {
+            _mockSignalKUpdateHandler.Setup(m => m.Update(It.IsAny<SignalKDeltaMessage>()))
+            .Throws(new Exception("Oops"));
+            _mockSignalKUpdateHandler.Setup(m => m.InvalidServerMessage(It.IsAny<string>()))
+            .Throws(new Exception("Oops"));
+
+            Action action = () => _dispenser.ConvertAndDispenseMessage("server message");
+
+            action.Should().NotThrow();
+        }
+
         #region Support Code
 
         protected override void SetUpObjectUnderTest()

@@ -1,4 +1,5 @@
-﻿using System.Net.WebSockets;
+﻿using Logic.Interfaces;
+using System.Net.WebSockets;
 using System.Text;
 
 namespace Logic.Wrappers
@@ -6,6 +7,7 @@ namespace Logic.Wrappers
     internal class ClientWebSocketWrapper : IClientWebSocketWrapper
     {
         private readonly ClientWebSocket _clientWebSocket;
+        private readonly IMessageLogger? _messageLogger;
 
         internal ClientWebSocketWrapper()
         {
