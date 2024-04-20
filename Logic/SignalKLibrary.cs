@@ -24,9 +24,9 @@ namespace Logic
             return ds;
         }
 
-        public static Task ProcessUpdates(string streamingUrl, ISignalKUpdateHandler signalKUpdateHandler)
+        public static Task ProcessUpdates(string streamingUrl, ISignalKUpdateHandler signalKUpdateHandler, IMessageLogger? messageLogger = null)
         {
-            ISignalKMessageHandler mh = new SignalKMessageHandler(streamingUrl);
+            ISignalKMessageHandler mh = new SignalKMessageHandler(streamingUrl, messageLogger);
             var messageConverter = new DeltaMessageConverter();
             ISignalKMessageDispenser signalKMessageDispenser = new SignalKMessageDispenser(messageConverter, signalKUpdateHandler);
             return mh.GetMessagesFromTheSignalKServerAndPassThemToTheSignalKMessageDispenser(signalKMessageDispenser);

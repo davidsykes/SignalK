@@ -17,6 +17,7 @@ namespace Logic.Wrappers
 
         async Task IClientWebSocketWrapper.ConnectAsync(string serverUrl)
         {
+            LogMessage("OPEN", serverUrl);
             Uri serverUri = new(serverUrl);
             await _clientWebSocket.ConnectAsync(serverUri, CancellationToken.None);
         }
@@ -48,6 +49,7 @@ namespace Logic.Wrappers
 
         void IClientWebSocketWrapper.Close()
         {
+            LogMessage("CLOSE", "");
             _clientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal Close", CancellationToken.None);
         }
 
