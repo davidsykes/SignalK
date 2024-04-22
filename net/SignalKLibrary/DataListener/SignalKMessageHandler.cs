@@ -1,5 +1,4 @@
 ﻿using SignalKLibrary.DataListener.Interfaces;
-using SignalKLibrary.Interfaces;
 using SignalKLibrary.Wrappers;
 
 namespace SignalKLibrary.DataListener
@@ -9,7 +8,7 @@ namespace SignalKLibrary.DataListener
         readonly string _streamingUrl;
         readonly IClientWebSocketWrapper _webSocket;
 
-        internal SignalKMessageHandler(string streamingUrl, IMessageLogger? messageLogger)
+        internal SignalKMessageHandler(string streamingUrl, ISignalKMessageLogger? messageLogger)
         {
             _streamingUrl = streamingUrl;
             _webSocket = new ClientWebSocketWrapper(messageLogger);

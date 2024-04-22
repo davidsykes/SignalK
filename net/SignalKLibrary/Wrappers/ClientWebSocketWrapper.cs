@@ -1,5 +1,4 @@
-﻿using SignalKLibrary.Interfaces;
-using System.Net.WebSockets;
+﻿using System.Net.WebSockets;
 using System.Text;
 
 namespace SignalKLibrary.Wrappers
@@ -7,9 +6,9 @@ namespace SignalKLibrary.Wrappers
     internal class ClientWebSocketWrapper : IClientWebSocketWrapper
     {
         private readonly ClientWebSocket _clientWebSocket;
-        private readonly IMessageLogger? _messageLogger;
+        private readonly ISignalKMessageLogger? _messageLogger;
 
-        internal ClientWebSocketWrapper(IMessageLogger? messageLogger)
+        internal ClientWebSocketWrapper(ISignalKMessageLogger? messageLogger)
         {
             _clientWebSocket = new ClientWebSocket();
             _messageLogger = messageLogger;

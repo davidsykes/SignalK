@@ -1,5 +1,4 @@
-﻿using SignalKLibrary.Interfaces;
-using SignalKLibrary.MessageHandlers;
+﻿using SignalKLibrary.MessageHandlers;
 using SignalKLibrary.Wrappers;
 
 namespace SignalKLibrary.DataSources;
@@ -10,7 +9,7 @@ internal class SignalKDataSource : ISignalKDataSource
     readonly IClientWebSocketWrapper _webSocket;
     readonly ISKLogInHandler _logInHandler;
 
-    internal SignalKDataSource(string streamingUrl, string userName, string password, IMessageLogger? messageLogger)
+    internal SignalKDataSource(string streamingUrl, string userName, string password, ISignalKMessageLogger? messageLogger)
     {
         _streamingUrl = streamingUrl;
         _webSocket = new ClientWebSocketWrapper(messageLogger);
