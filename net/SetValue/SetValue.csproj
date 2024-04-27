@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SignalKLibrary" Version="0.1.2" />
+    <PackageReference Include="ApplicationParameters" Version="1.0.1" />
+    <PackageReference Include="SignalKLibrary" Version="0.2.0" />
   </ItemGroup>
 
 </Project>
