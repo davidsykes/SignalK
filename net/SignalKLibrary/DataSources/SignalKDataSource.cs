@@ -31,9 +31,9 @@ internal class SignalKDataSource : ISignalKDataSource
         await _logInHandler.LogIn();
     }
 
-    ISignalKSettableValue ISignalKDataSource.CreateValue<T>(string name)
+    ISignalKSettableValue<T> ISignalKDataSource.CreateValue<T>(string name)
     {
-        return new SignalKSettableValue(name, _webSocket);
+        return new SignalKSettableValue<T>(name, _webSocket);
     }
 
     void ISignalKDataSource.Close()

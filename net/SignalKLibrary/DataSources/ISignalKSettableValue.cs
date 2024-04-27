@@ -1,7 +1,7 @@
 ﻿namespace SignalKLibrary.DataSources
 {
-    public interface ISignalKSettableValue
+    public interface ISignalKSettableValue<ValueType>
     {
-        Task Set(double value);
+        Task Set(ValueType value);
     }
 }

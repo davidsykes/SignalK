@@ -3,7 +3,7 @@
     public interface ISignalKDataSource
     {
         Task Initialise();
-        ISignalKSettableValue CreateValue<T>(string name);
+        ISignalKSettableValue<T> CreateValue<T>(string name);
         void Close();
     }
 }

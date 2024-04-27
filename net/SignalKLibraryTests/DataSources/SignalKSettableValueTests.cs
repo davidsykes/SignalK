@@ -10,16 +10,28 @@ namespace Tests
 {
     public class SignalKSettableValueTests : TestBase
     {
-        ISignalKSettableValue _value;
-
         string _messageSent = "";
         JsonSerializerOptions _jsonOptions;
         Mock<IClientWebSocketWrapper> _mockClientWebSocket;
 
         [Test]
-        public async Task SettingTheValueSendsTheUpdateMessage()
+        public async Task SettingAStringValueSendsTheUpdateMessage()
         {
-            await _value.Set(3.14);
+            var value = new SignalKSettableValue<string>("value.name", _mockClientWebSocket.Object); ;
+
+            await value.Set("Hello World");
+
+            _mockClientWebSocket.Verify(m => m.SendMessage(It.IsAny<string>()), Times.Once);
+
+            _messageSent.Should().Be("""{"updates":[{"values":[{"path":"value.name","value":"Hello World"}]}]}""");
+        }
+
+        [Test]
+        public async Task SettingADoubleValueSendsTheUpdateMessage()
+        {
+            var value = new SignalKSettableValue<double>("value.name", _mockClientWebSocket.Object); ;
+
+            await value.Set(3.14);
 
             _mockClientWebSocket.Verify(m => m.SendMessage(It.IsAny<string>()), Times.Once);
 
@@ -27,13 +39,6 @@ namespace Tests
         }
 
         #region Support Code
-
-        protected override void SetUpObjectUnderTest()
-        {
-            base.SetUpObjectUnderTest();
-
-            _value = new SignalKSettableValue("value.name", _mockClientWebSocket.Object);
-        }
 
         protected override void SetUpData()
         {

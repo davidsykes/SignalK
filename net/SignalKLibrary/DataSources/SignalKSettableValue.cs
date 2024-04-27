@@ -4,15 +4,15 @@ using System.Text.Json.Serialization;
 
 namespace SignalKLibrary.DataSources
 {
-    internal class SignalKSettableValue(string name, IClientWebSocketWrapper webSocket) : ISignalKSettableValue
+    internal class SignalKSettableValue<ValueType>(string name, IClientWebSocketWrapper webSocket) : ISignalKSettableValue<ValueType>
     {
         private readonly string _name = name;
         private readonly IClientWebSocketWrapper _webSocket = webSocket;
 
-        async Task ISignalKSettableValue.Set(double value)
+        public async Task Set(ValueType value)
         {
             var valueMessage = new UpdatesMessage.ValuesMessage(_name, value);
-            var updateMessage = new UpdatesMessage.UpdateMessage(new List<UpdatesMessage.ValuesMessage> { valueMessage });
+            var updateMessage = new UpdatesMessage.UpdateMessage([valueMessage]);
             var updatesMessage = new UpdatesMessage([updateMessage]);
 
             var json = JsonSerializer.Serialize(updatesMessage);
@@ -45,9 +45,9 @@ namespace SignalKLibrary.DataSources
                 [JsonPropertyName("path")]
                 public string Path { get; set; }
                 [JsonPropertyName("value")]
-                public double Value { get; set; }
+                public ValueType Value { get; set; }
 
-                internal ValuesMessage(string path, double value)
+                internal ValuesMessage(string path, ValueType value)
                 {
                     this.Path = path;
                     this.Value = value;
